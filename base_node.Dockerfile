@@ -73,16 +73,32 @@ ENV PATH=$SPARK_HOME/bin:$PATH
 ENV PYSPARK_PYTHON=python3
 
 # Hadoop PORTS! ====================================================
-EXPOSE 9000 50070 8020 50075 22 8022 8088 8040 8025 8030
-# YARN PORTS! ======================================================
-EXPOSE 1
-# HIVE PORTS! ======================================================
-EXPOSE 2
-# Spark PORTS! =====================================================
-EXPOSE 3
+ENV NAMENODE_UI_PORT 50070
+ENV DATANODE_UI_PORT 50075
+ENV NAMENODE_PORT 8020
+EXPOSE ${NAMENODE_UI_PORT} ${NAMENODE_PORT} ${DATANODE_UI_PORT}
 
+# YARN PORTS! ======================================================
+ENV YARN_UI_PORT 8088
+ENV YARN_HTTPS_PORT 8090
+ENV RES_MANAGER_PORT 8025
+ENV SCHEDULER_PORT 8030
+EXPOSE ${YARN_UI_PORT} ${YARN_HTTPS_PORT} ${RES_MANAGER_PORT} ${SCHEDULER_PORT}
+
+# HIVE PORTS! ======================================================
+ENV HIVE_UI_PORT 9999
+ENV HIVE_META_PORT 9083
+ENV HIVE_SERVER_PORT 10000
+EXPOSE ${HIVE_SERVER_PORT} ${HIVE_UI_PORT} ${HIVE_META_PORT}
+
+# Spark PORTS! =====================================================
+ENV SPARK_MASTER_PORT 7077
+ENV SPARK_MASTER_WEBUI_PORT 8080
+ENV PYSPARK_APP_DRIVER_PORT 4040
+EXPOSE ${SPARK_MASTER_PORT} ${SPARK_MASTER_WEBUI_PORT} ${PYSPARK_APP_DRIVER_PORT}
 
 # SSH config and launch ============================================
+EXPOSE 22 8022
 COPY ssh_config /etc/ssh/ssh_config
 COPY ssh_config /root/.ssh/config
 RUN chmod 600 /root/.ssh/config /etc/ssh/ssh_config && \
