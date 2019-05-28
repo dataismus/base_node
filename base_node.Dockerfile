@@ -66,12 +66,6 @@ RUN tar -xvzf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION}.tg
 
 RUN apt-get update && apt-get install -yq python3 openssh-server
 
-# Hadoop/yarn config ===============================================
-# COPY core-site.xml ${HADOOP_CONF_DIR}/core-site.xml
-# COPY yarn-site.xml ${HADOOP_CONF_DIR}/yarn-site.xml
-# COPY hdfs-site.xml ${HADOOP_CONF_DIR}/hdfs-site.xml
-# COPY slaves ${HADOOP_CONF_DIR}/slaves
-
 # Hadoop PORTS! ====================================================
 ENV NAMENODE_UI_PORT 50070
 ENV DATANODE_UI_PORT 50075
