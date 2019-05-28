@@ -44,8 +44,6 @@ RUN tar -xvzf hadoop-${HADOOP_VERSION}.tar.gz  && \
     rm -rf /hadoop-${HADOOP_VERSION}.tar.gz
 RUN mkdir -p /root/.ssh
 
-RUN apt-get update && apt-get install -yq python3 openssh-server
-
 # HIVE installation ================================================
 ENV HIVE_HOME /hive
 ENV PATH $PATH:${HIVE_HOME}/bin
@@ -53,24 +51,26 @@ RUN tar -xvzf apache-hive-${HIVE_VERSION}-bin.tar.gz  && \
     mv apache-hive-${HIVE_VERSION}-bin ${HIVE_HOME} && \
     rm -rf apache-hive-${HIVE_VERSION}-bin.tar.gz
 
-# Spark installation ===============================================
-# COPY spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION}.tgz /tmp/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION}.tgz
-RUN tar -xvzf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION}.tgz -C /usr/local --owner root --group root --no-same-owner && \
-    rm spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION}.tgz
-RUN cd /usr/local && ln -s spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION} spark
-
-# Hadoop/yarn config ===============================================
-# COPY core-site.xml ${HADOOP_CONF_DIR}/core-site.xml
-# COPY yarn-site.xml ${HADOOP_CONF_DIR}/yarn-site.xml
-# COPY hdfs-site.xml ${HADOOP_CONF_DIR}/hdfs-site.xml
-# COPY slaves ${HADOOP_CONF_DIR}/slaves
-
 # (py)Spark config =================================================
 ENV SPARK_HOME /spark
 ENV PYTHONPATH $SPARK_HOME/python:$SPARK_HOME/python/lib/py4j-0.10.7-src.zip
 ENV SPARK_OPTS --driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M --driver-java-options=-Dlog4j.logLevel=info
 ENV PATH=$SPARK_HOME/bin:$PATH
 ENV PYSPARK_PYTHON=python3
+
+# Spark installation ===============================================
+# COPY spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION}.tgz /tmp/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION}.tgz
+RUN tar -xvzf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION}.tgz --owner root --group root --no-same-owner && \
+    mv spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION} ${SPARK_HOME} && \
+    rm -rf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION}.tgz
+
+RUN apt-get update && apt-get install -yq python3 openssh-server
+
+# Hadoop/yarn config ===============================================
+# COPY core-site.xml ${HADOOP_CONF_DIR}/core-site.xml
+# COPY yarn-site.xml ${HADOOP_CONF_DIR}/yarn-site.xml
+# COPY hdfs-site.xml ${HADOOP_CONF_DIR}/hdfs-site.xml
+# COPY slaves ${HADOOP_CONF_DIR}/slaves
 
 # Hadoop PORTS! ====================================================
 ENV NAMENODE_UI_PORT 50070
@@ -94,10 +94,14 @@ EXPOSE ${HIVE_SERVER_PORT} ${HIVE_UI_PORT} ${HIVE_META_PORT}
 # Spark PORTS! =====================================================
 ENV SPARK_MASTER_PORT 7077
 ENV SPARK_MASTER_WEBUI_PORT 8080
-ENV PYSPARK_APP_DRIVER_PORT 4040
-EXPOSE ${SPARK_MASTER_PORT} ${SPARK_MASTER_WEBUI_PORT} ${PYSPARK_APP_DRIVER_PORT}
+ENV SPARK_HISTORY_PORT 18080
+ENV PYSPARK_APP_DRIVER_PORT_0 4040
+ENV PYSPARK_APP_DRIVER_PORT_1 4041
+ENV PYSPARK_APP_DRIVER_PORT_2 4042
+ENV PYSPARK_APP_DRIVER_PORT_3 4043
+EXPOSE ${SPARK_MASTER_PORT} ${SPARK_HISTORY_PORT} ${SPARK_MASTER_WEBUI_PORT} ${PYSPARK_APP_DRIVER_PORT_0} ${PYSPARK_APP_DRIVER_PORT_1} ${PYSPARK_APP_DRIVER_PORT_2} ${PYSPARK_APP_DRIVER_PORT_3}
 
-# SSH config and launch ============================================
+# SSH config and launch (necessary for cluster deployment) =========
 EXPOSE 22 8022
 COPY ssh_config /etc/ssh/ssh_config
 COPY ssh_config /root/.ssh/config
