@@ -98,6 +98,7 @@ EXPOSE ${SPARK_MASTER_PORT} ${SPARK_HISTORY_PORT} ${SPARK_MASTER_WEBUI_PORT} ${P
 
 # SSH config and launch (necessary for cluster deployment) =========
 EXPOSE 22 8022
+
 COPY ssh_config /etc/ssh/ssh_config
 COPY ssh_config /root/.ssh/config
 RUN chmod 600 /root/.ssh/config /etc/ssh/ssh_config && \
