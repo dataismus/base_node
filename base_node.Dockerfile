@@ -71,9 +71,10 @@ RUN apt-get update && apt-get install -yq python3 openssh-server
 # Hadoop PORTS! ====================================================
 ENV NAMENODE_UI_PORT 50070
 ENV DATANODE_UI_PORT 50075
+ENV IPC_LISTENER_PORT 50020
 ENV NAMENODE_PORT 9000
 ENV NAMENODE_META_PORT 8020
-EXPOSE ${NAMENODE_UI_PORT} ${NAMENODE_PORT} ${DATANODE_UI_PORT} ${NAMENODE_META_PORT}
+EXPOSE ${NAMENODE_UI_PORT} ${NAMENODE_PORT} ${DATANODE_UI_PORT} ${NAMENODE_META_PORT} ${IPC_LISTENER_PORT}
 
 # YARN PORTS! ======================================================
 ENV YARN_UI_PORT 8088
