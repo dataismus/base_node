@@ -66,7 +66,7 @@ RUN tar -xvzf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION}.tg
     mv spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION} ${SPARK_HOME} && \
     rm -rf spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP4SPARK_VERSION}.tgz
 
-RUN apt-get update && apt-get install -yq python3 openssh-server
+RUN apt-get update && apt-get install -yq python3 openssh-server nano
 
 # Hadoop PORTS! ====================================================
 ENV NAMENODE_UI_PORT 50070
