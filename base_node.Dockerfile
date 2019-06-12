@@ -21,6 +21,8 @@ RUN apt-get -y update && \
 ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre
 ENV PATH $PATH:${JAVA_HOME}/bin:/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin 
 
+# readlink -f /usr/bin/java | sed "s:bin/java::" ---> /usr/lib/jvm/java-11-openjdk-amd64/   ???????????
+
 # DOWNLOAD KEY BINARIES ============================================
 ENV HADOOP_VERSION 2.7.3
 RUN wget --no-verbose https://archive.apache.org/dist/hadoop/core/hadoop-${HADOOP_VERSION}/hadoop-${HADOOP_VERSION}.tar.gz
