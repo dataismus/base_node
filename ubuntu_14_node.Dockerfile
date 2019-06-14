@@ -15,9 +15,9 @@ RUN apt-get update && apt-get -yq dist-upgrade \
     && rm -rf /var/lib/apt/lists/*
 
 # JAVA installation ================================================
-RUN apt-get -y update && \
-    apt-get install openjdk-8-jre ca-certificates-java && \
-    rm -rf /var/lib/apt/lists/*
+# RUN apt-get -y update && \
+#     apt-get install --no-install-recommends -y openjdk-8-jre   apt-get install openjdk-8-jre   ca-certificates-java && \
+#     rm -rf /var/lib/apt/lists/*
 
 RUN apt-get install -y software-properties-common && add-apt-repository ppa:openjdk-r/ppa && apt-get update && \
     apt-get install openjdk-8-jre ca-certificates-java && \
