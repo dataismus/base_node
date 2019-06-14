@@ -15,13 +15,13 @@ RUN apt-get update && apt-get -yq dist-upgrade \
     && rm -rf /var/lib/apt/lists/*
 
 # JAVA installation ================================================
-# RUN apt-get -y update && \
-#     apt-get install --no-install-recommends -y openjdk-8-jre   apt-get install openjdk-8-jre   ca-certificates-java && \
-#     rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update && apt-get install -y software-properties-common && add-apt-repository ppa:openjdk-r/ppa && \
-    apt-get install openjdk-8-jre ca-certificates-java && \
+RUN apt-get -y update && \
+    apt-get install --no-install-recommends -y openjdk-8-jre   apt-get install openjdk-8-jre   ca-certificates-java && \
     rm -rf /var/lib/apt/lists/*
+
+# RUN apt-get update && apt-get install -y software-properties-common && add-apt-repository ppa:openjdk-r/ppa && \
+#     apt-get install openjdk-8-jre ca-certificates-java && \
+#     rm -rf /var/lib/apt/lists/*
 
 ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre
 ENV PATH $PATH:${JAVA_HOME}/bin:/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin 
