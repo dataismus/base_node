@@ -19,7 +19,7 @@ RUN apt-get update && apt-get -yq dist-upgrade \
 #     apt-get install --no-install-recommends -y openjdk-8-jre ca-certificates-java && \
 #     rm -rf /var/lib/apt/lists/*
 
-RUN add-apt-repository ppa:openjdk-r/ppa && apt-get update && \
+RUN apt-get install -y software-properties-common && add-apt-repository ppa:openjdk-r/ppa && apt-get update && \
     apt-get install openjdk-8-jre ca-certificates-java && \
     rm -rf /var/lib/apt/lists/*
 
